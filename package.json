@@ -1,0 +1,9 @@
+{
+  "name": "1-dollar-store",
+  "version": "1.0.0",
+  "private": true,
+  "description": "1$ Store — static storefront + Vercel serverless API for PayPal Checkout and gated digital downloads.",
+  "engines": {
+    "node": ">=18"
+  }
+}

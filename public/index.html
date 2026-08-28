@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$1 Store — Everything For One Dollar</title>
+<link rel="icon" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF; --ink:#111311; --forest:#00551A; --forest-dark:#003D12; --forest-tint:#E8F1EA;
+    --line: rgba(17,19,17,0.14); --danger:#A8382C;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--white); color:var(--ink); font-family:'Inter', sans-serif; line-height:1.65; }
+  .serif{ font-family:'Fraunces', serif; }
+  .mono{ font-family:'Space Mono', monospace; }
+  a{ color:inherit; }
+
+  header{ max-width:1100px; margin:0 auto; padding:54px 24px 34px; text-align:center; }
+  .logo-mark{ width:118px; height:auto; margin:0 auto 18px; display:block; }
+  header p.tag{ font-family:'Fraunces', serif; font-weight:500; font-size:1.3rem; max-width:560px; margin:0 auto; }
+  header p.sub{ margin-top:12px; font-family:'Space Mono', monospace; font-size:0.75rem; letter-spacing:2.5px; color:var(--forest); text-transform:uppercase; }
+
+  .tear-line{ max-width:1100px; margin:0 auto; border-top:1px solid var(--line); }
+
+  .controls{ max-width:1100px; margin:36px auto 10px; padding:0 24px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; }
+  .search-box{ flex:1; min-width:220px; position:relative; }
+  .search-box input{ width:100%; padding:13px 16px 13px 44px; border:1.5px solid var(--ink); border-radius:3px; background:var(--white); font-family:'Inter', sans-serif; font-size:0.95rem; color:var(--ink); outline:none; }
+  .search-box input:focus{ border-color:var(--forest); box-shadow:0 0 0 3px var(--forest-tint); }
+  .search-box::after{
+    content:""; position:absolute; left:16px; top:50%; width:15px; height:15px; transform:translateY(-50%); opacity:0.55;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat center / contain;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat center / contain;
+  }
+  .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+  .chip{ font-family:'Space Mono', monospace; font-size:0.74rem; padding:9px 15px; border:1.5px solid var(--ink); border-radius:20px; background:transparent; cursor:pointer; color:var(--ink); transition: all .15s ease; white-space:nowrap; text-transform:uppercase; letter-spacing:0.5px; }
+  .chip:hover{ background:var(--forest-tint); border-color:var(--forest); }
+  .chip.active{ background:var(--forest); border-color:var(--forest); color:var(--white); }
+
+  main{ max-width:1100px; margin:0 auto; padding:24px 24px 80px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:22px; margin-top:20px; }
+  .card{ background:var(--white); border:1.5px solid var(--ink); border-radius:4px; position:relative; display:flex; flex-direction:column; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; overflow:hidden; }
+  .card:hover{ transform: translateY(-4px); border-color:var(--forest); box-shadow: 0 10px 24px rgba(0,85,26,0.12); }
+  .cover-wrap{ position:relative; width:100%; aspect-ratio:3/4; overflow:hidden; border-bottom:1.5px solid var(--ink); background:var(--forest-tint); }
+  .cover-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .price-stamp{ position:absolute; top:16px; right:16px; font-family:'Space Mono', monospace; font-weight:700; font-size:0.82rem; color:var(--forest); border:1.5px solid var(--forest); border-radius:50%; width:42px; height:42px; display:flex; align-items:center; justify-content:center; background:var(--white); }
+  .card-body{ padding:18px 20px 20px; display:flex; flex-direction:column; gap:10px; flex:1; }
+  .cat-label{ font-family:'Space Mono', monospace; font-size:0.65rem; letter-spacing:1.2px; text-transform:uppercase; color:var(--forest); }
+  .card h3{ font-family:'Fraunces', serif; font-weight:600; font-size:1.18rem; }
+  .card p.desc{ font-size:0.88rem; opacity:0.7; flex:1; }
+  .receipt-line{ display:flex; justify-content:space-between; align-items:baseline; font-family:'Space Mono', monospace; font-size:0.78rem; border-top:1px dashed var(--line); padding-top:10px; margin-top:4px; }
+  .receipt-line .sku{ opacity:0.5; }
+  .receipt-line .price{ font-weight:700; color:var(--forest); }
+
+  .buy-btn{ margin-top:6px; display:flex; align-items:center; justify-content:center; gap:8px; background:var(--forest); color:var(--white); text-decoration:none; font-family:'Inter', sans-serif; font-weight:600; font-size:0.9rem; padding:12px 16px; border-radius:3px; border:1.5px solid var(--forest); cursor:pointer; transition: background .15s ease, transform .1s ease; }
+  .buy-btn:hover{ background:var(--forest-dark); border-color:var(--forest-dark); }
+  .buy-btn:active{ transform: scale(0.97); }
+
+  .empty-state{ text-align:center; padding:60px 20px; opacity:0.55; font-family:'Space Mono', monospace; grid-column:1/-1; }
+
+  footer{ max-width:1100px; margin:0 auto; padding:36px 24px 54px; text-align:center; }
+  .trust{ display:flex; flex-wrap:wrap; gap:24px; justify-content:center; font-family:'Space Mono', monospace; font-size:0.74rem; color:var(--forest-dark); opacity:0.9; margin-bottom:16px; }
+  footer .note{ font-family:'Fraunces', serif; font-size:0.9rem; opacity:0.55; }
+
+  /* ===== Checkout modal ===== */
+  .modal-backdrop{ position:fixed; inset:0; background:rgba(17,19,17,0.55); display:none; align-items:center; justify-content:center; padding:20px; z-index:1000; }
+  .modal-backdrop.open{ display:flex; }
+  .modal{ background:var(--white); border-radius:6px; max-width:420px; width:100%; padding:28px; position:relative; max-height:90vh; overflow-y:auto; }
+  .modal-close{ position:absolute; top:14px; right:14px; background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--ink); opacity:0.5; line-height:1; }
+  .modal-close:hover{ opacity:1; }
+  .modal h2{ font-family:'Fraunces', serif; font-size:1.25rem; margin-bottom:6px; padding-right:20px; }
+  .modal .modal-price{ font-family:'Space Mono', monospace; color:var(--forest); font-weight:700; margin-bottom:18px; }
+  #paypal-button-container{ min-height:45px; }
+  .modal-status{ margin-top:14px; font-size:0.85rem; text-align:center; }
+  .modal-status.error{ color:var(--danger); }
+  .download-box{ text-align:center; padding-top:6px; }
+  .download-box .check{ width:48px; height:48px; margin:0 auto 14px; border-radius:50%; background:var(--forest-tint); border:1.5px solid var(--forest); display:flex; align-items:center; justify-content:center; font-size:1.3rem; color:var(--forest); }
+  .download-btn{ display:inline-flex; align-items:center; gap:8px; text-decoration:none; background:var(--forest); color:var(--white); font-weight:600; font-size:0.92rem; padding:13px 22px; border-radius:4px; border:1.5px solid var(--forest); margin-top:8px; }
+  .download-btn:hover{ background:var(--forest-dark); }
+  .expiry-note{ margin-top:12px; font-family:'Space Mono', monospace; font-size:0.7rem; opacity:0.5; }
+  .spinner{ width:22px; height:22px; border:2.5px solid var(--forest-tint); border-top-color:var(--forest); border-radius:50%; margin:16px auto; animation:spin .7s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  @media (max-width:600px){
+    header p.tag{ font-size:1.1rem; }
+    .logo-mark{ width:96px; }
+    .controls{ flex-direction:column; align-items:stretch; }
+  }
+  @media (prefers-reduced-motion: reduce){ .card{ transition:none; } .card:hover{ transform:none; } }
+  :focus-visible{ outline:3px solid var(--forest); outline-offset:2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <img class="logo-mark" src="/logo.png" alt="$1 Store logo">
+  <p class="tag serif">Handpicked digital goods — every item just one dollar</p>
+  <p class="sub mono">Secure PayPal checkout · instant download</p>
+</header>
+
+<div class="tear-line"></div>
+
+<div class="controls">
+  <div class="search-box"><input type="text" id="searchInput" placeholder="Search products..."></div>
+  <div class="chips" id="chipsContainer"></div>
+</div>
+
+<main><div class="grid" id="productGrid"><div class="empty-state">Loading products…</div></div></main>
+
+<div class="tear-line"></div>
+
+<footer>
+  <div class="trust">
+    <span>🔒 Secure PayPal checkout</span>
+    <span>⚡ Instant delivery after payment</span>
+    <span>💵 Flat price: $1 per item</span>
+  </div>
+  <p class="note">$1 Store — everything here costs one dollar.</p>
+</footer>
+
+<!-- Checkout modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div id="modalCheckoutView">
+      <h2 id="modalTitle"></h2>
+      <p class="modal-price mono" id="modalPrice"></p>
+      <div id="paypal-button-container"></div>
+      <p class="modal-status" id="modalStatus"></p>
+    </div>
+    <div id="modalDownloadView" style="display:none;">
+      <div class="download-box">
+        <div class="check">✓</div>
+        <h2>Payment successful!</h2>
+        <p style="opacity:.75; font-size:.9rem; margin-top:6px;">Your download is ready.</p>
+        <a class="download-btn" id="downloadLink" href="#" download>Download File ↓</a>
+        <p class="expiry-note" id="expiryNote"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let PAYPAL_CLIENT_ID = null;
+  let paypalSdkLoaded = false;
+  let products = [];
+  const categories = ["All", "Ebooks", "Software", "Templates", "Other"];
+  let activeCategory = "All";
+  let searchTerm = "";
+
+  const chipsContainer = document.getElementById("chipsContainer");
+  const grid = document.getElementById("productGrid");
+  const searchInput = document.getElementById("searchInput");
+
+  async function loadProducts(){
+    try{
+      const res = await fetch('/api/products?lang=en');
+      products = await res.json();
+    }catch(e){
+      products = [];
+    }
+    renderChips();
+    renderProducts();
+  }
+
+  function renderChips(){
+    chipsContainer.innerHTML = "";
+    categories.forEach(cat => {
+      const btn = document.createElement("button");
+      btn.className = "chip" + (cat === activeCategory ? " active" : "");
+      btn.textContent = cat;
+      btn.addEventListener("click", () => { activeCategory = cat; renderChips(); renderProducts(); });
+      chipsContainer.appendChild(btn);
+    });
+  }
+
+  function renderProducts(){
+    const term = searchTerm.toLowerCase();
+    const filtered = products.filter(p => {
+      const matchesCat = activeCategory === "All" || p.category === activeCategory;
+      const matchesSearch = p.title.toLowerCase().includes(term) || p.description.toLowerCase().includes(term);
+      return matchesCat && matchesSearch;
+    });
+
+    grid.innerHTML = "";
+
+    if(products.length === 0){
+      grid.innerHTML = '<div class="empty-state">New products are coming soon — check back shortly.</div>';
+      return;
+    }
+    if(filtered.length === 0){
+      grid.innerHTML = '<div class="empty-state">No products match your search</div>';
+      return;
+    }
+
+    filtered.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="cover-wrap"><img src="${p.cover}" alt="${p.title} cover"><div class="price-stamp mono">$${p.price}</div></div>
+        <div class="card-body">
+          <div class="cat-label mono">${p.category}</div>
+          <h3>${p.title}</h3>
+          <p class="desc">${p.description}</p>
+          <div class="receipt-line"><span class="sku">${p.sku}</span><span class="price">$${p.price}</span></div>
+          <button class="buy-btn" data-id="${p.id}">Buy Now</button>
+        </div>
+      `;
+      card.querySelector('.buy-btn').addEventListener('click', () => openCheckout(p));
+      grid.appendChild(card);
+    });
+  }
+
+  searchInput.addEventListener("input", (e) => { searchTerm = e.target.value.trim(); renderProducts(); });
+
+  // ===== Checkout modal =====
+  const modalBackdrop = document.getElementById('modalBackdrop');
+  const modalClose = document.getElementById('modalClose');
+  const modalCheckoutView = document.getElementById('modalCheckoutView');
+  const modalDownloadView = document.getElementById('modalDownloadView');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalPrice = document.getElementById('modalPrice');
+  const modalStatus = document.getElementById('modalStatus');
+  const paypalButtonContainer = document.getElementById('paypal-button-container');
+  const downloadLink = document.getElementById('downloadLink');
+  const expiryNote = document.getElementById('expiryNote');
+
+  modalClose.addEventListener('click', closeModal);
+  modalBackdrop.addEventListener('click', (e) => { if(e.target === modalBackdrop) closeModal(); });
+
+  function closeModal(){
+    modalBackdrop.classList.remove('open');
+    modalCheckoutView.style.display = '';
+    modalDownloadView.style.display = 'none';
+    modalStatus.textContent = '';
+    modalStatus.className = 'modal-status';
+    paypalButtonContainer.innerHTML = '';
+  }
+
+  async function ensurePaypalSdk(){
+    if(paypalSdkLoaded) return;
+    if(!PAYPAL_CLIENT_ID){
+      const res = await fetch('/api/config');
+      const data = await res.json();
+      PAYPAL_CLIENT_ID = data.clientId;
+    }
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_CLIENT_ID)}&currency=USD&intent=capture`;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+    paypalSdkLoaded = true;
+  }
+
+  async function openCheckout(product){
+    modalTitle.textContent = product.title;
+    modalPrice.textContent = `$${product.price} ${product.currency}`;
+    modalBackdrop.classList.add('open');
+    modalCheckoutView.style.display = '';
+    modalDownloadView.style.display = 'none';
+    modalStatus.textContent = '';
+    modalStatus.className = 'modal-status';
+    paypalButtonContainer.innerHTML = '<div class="spinner"></div>';
+
+    try{
+      await ensurePaypalSdk();
+    }catch(e){
+      modalStatus.textContent = 'Could not load PayPal. Please try again.';
+      modalStatus.className = 'modal-status error';
+      paypalButtonContainer.innerHTML = '';
+      return;
+    }
+
+    paypalButtonContainer.innerHTML = '';
+
+    window.paypal.Buttons({
+      style: { layout: 'vertical', color: 'black', shape: 'rect', label: 'paypal', height: 45 },
+      createOrder: async () => {
+        modalStatus.textContent = '';
+        modalStatus.className = 'modal-status';
+        const res = await fetch('/api/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productId: product.id })
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || 'Could not start checkout');
+        return data.id;
+      },
+      onApprove: async (data) => {
+        modalStatus.textContent = 'Verifying payment…';
+        const res = await fetch('/api/capture-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderID: data.orderID, productId: product.id })
+        });
+        const result = await res.json();
+        if(!res.ok){
+          modalStatus.textContent = result.error || 'Payment could not be verified.';
+          modalStatus.className = 'modal-status error';
+          return;
+        }
+        downloadLink.href = result.downloadUrl;
+        expiryNote.textContent = 'This download link expires in 15 minutes for your security.';
+        modalCheckoutView.style.display = 'none';
+        modalDownloadView.style.display = 'block';
+      },
+      onError: (err) => {
+        modalStatus.textContent = 'Something went wrong with PayPal. Please try again.';
+        modalStatus.className = 'modal-status error';
+      },
+      onCancel: () => {
+        modalStatus.textContent = 'Checkout cancelled.';
+        modalStatus.className = 'modal-status';
+      }
+    }).render('#paypal-button-container');
+  }
+
+  loadProducts();
+</script>
+
+</body>
+</html>
