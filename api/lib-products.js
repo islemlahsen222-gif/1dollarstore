@@ -34,18 +34,20 @@ const products = [
     file: 'The-Stranger-in-Room-404.pdf' // must exist inside /files
   }
 
-  // Example of a second product — copy this shape and edit it:
-  // {
-  //   id: 'my-next-product',
-  //   sku: 'SKU-002',
-  //   price: 100,
-  //   currency: 'USD',
-  //   category: { en: 'Software', ar: 'برامج' },
-  //   title: { en: 'Product name', ar: 'اسم المنتج' },
-  //   description: { en: 'Short description.', ar: 'وصف مختصر.' },
-  //   cover: '/covers/my-next-product.jpg',
-  //   file: 'my-next-product.zip'
-  // },
+
+   {
+     id: 'The Power of the Page',
+    sku: 'SKU-002',
+   price: 100,
+    currency: 'USD',
+    category: { en: 'Ebooks', },
+    title: { en: 'The Power of the Page', },
+    description: { en: 'The Power of the Page is an inspiring and practical book about the power of writing, self-expression, and turning your ideas into clear goals. It helps readers organize their thoughts, discover their potential, and take meaningful steps toward personal growth.
+
+Write your thoughts. Shape your goals. Create your future..', },
+     cover: '/covers/The Power of the Page.jpg',
+    file: 'The_Power_of_the_Page.pdf'
+   },
 ];
 
 function getProduct(id) {
