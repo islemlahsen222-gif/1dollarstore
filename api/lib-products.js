@@ -32,7 +32,7 @@ const products = [
     },
     cover: '/cover-room-404.jpg',
     file: 'The-Stranger-in-Room-404.pdf' // must exist inside /files
-
+    },
 
    {
      id: 'The Power of the Page',
