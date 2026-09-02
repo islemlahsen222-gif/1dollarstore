@@ -35,7 +35,7 @@ const products = [
     },
 
   {
-  id: 'power-of-the-page',
+  id: 'power of the page',
   sku: 'SKU-002',
   price: 100,
   currency: 'USD',
