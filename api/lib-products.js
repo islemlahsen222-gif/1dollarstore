@@ -46,7 +46,17 @@ const products = [
   file: 'The_Power_of_the_Page.pdf'
 },
 
-
+  {
+  id: '1 Percent Better Every Day Method',
+  sku: 'SKU-003',
+  price: 100,
+  currency: 'USD',
+  category: { en: 'Ebooks' },
+  title: { en: 'The 1 Percent Better Every Day Method' },
+  description: { en: 'A practical guide to building habits that last, tracking daily progress and letting compounding not willpower carry you toward the person you want to become' },
+  cover: '/cover-The 1 Percent Better Every Day Method.jpg',
+  file: 'The 1 Percent Better Every Day Method.pdf'
+},
 ];
 
 function getProduct(id) {
