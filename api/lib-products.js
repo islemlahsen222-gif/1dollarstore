@@ -57,6 +57,18 @@ const products = [
   cover: '/cover-The 1 Percent Better Every Day Method.jpg',
   file: 'The 1 Percent Better Every Day Method.pdf'
 },
+
+   {
+  id: 'The Art of Being Alone ',
+  sku: 'SKU-004',
+  price: 100,
+  currency: 'USD',
+  category: { en: 'Ebooks' },
+  title: { en: 'The Art of Being Alone' },
+  description: { en: 'A practical, inspiring guide that blends psychology, philosophy, and history to help readers transform solitude from a burden into a source of peace, clarity, and creativity' },
+  cover: '/The_Art_of_Being_Alone.jpg',
+  file: 'The_Art_of_Being_Alone .pdf'
+},
 ];
 
 function getProduct(id) {
