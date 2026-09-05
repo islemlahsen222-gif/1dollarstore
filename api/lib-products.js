@@ -69,6 +69,18 @@ const products = [
   cover: '/The_Art_of_Being_Alone.jpg',
   file: 'The_Art_of_Being_Alone .pdf'
 },
+
+    {
+  id: 'Stop Waiting for Motivation ',
+  sku: 'SKU-005',
+  price: 100,
+  currency: 'USD',
+  category: { en: 'Ebooks' },
+  title: { en: 'Stop Waiting for Motivation' },
+  description: { en: 'A practical guide that prompts you to take immediate action rather than waiting for motivation ' },
+  cover: '/Stop_Waiting_for_Motivation.jpg',
+  file: 'Stop_Waiting_for_Motivation.pdf'
+},
 ];
 
 function getProduct(id) {
